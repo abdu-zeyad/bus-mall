@@ -26,29 +26,29 @@ product.allImages =[];
 
 
 
-new product('BussMall product','../images/bag.jpg');//[0]
-new product('BussMall product','../images/banana.jpg');//[0]
-new product('BussMall product','../images/bathroom.jpg');//[0]
-new product('BussMall product','../images/boots.jpg');//[0]
-new product('BussMall product','../images/breakfast.jpg');//[0]
+new product('bag','../images/bag.jpg');//[0]
+new product('banana','../images/banana.jpg');//[0]
+new product('bathroom','../images/bathroom.jpg');//[0]
+new product('boots','../images/boots.jpg');//[0]
+new product('breakfast','../images/breakfast.jpg');//[0]
 
-new product('BussMall product','../images/bubblegum.jpg');//[0]
-new product('BussMall product','../images/chair.jpg');//[0]
-new product('BussMall product','../images/cthulhu.jpg');//[0]
-new product('BussMall product','../images/dog-duck.jpg');//[0]
-new product('BussMall product','../images/dragon.jpg');//[0]
+new product('bubblegum','../images/bubblegum.jpg');//[0]
+new product('chair','../images/chair.jpg');//[0]
+new product('cthulhu','../images/cthulhu.jpg');//[0]
+new product('dog-duck','../images/dog-duck.jpg');//[0]
+new product('dragon','../images/dragon.jpg');//[0]
 
-new product('BussMall product','../images/pen.jpg');//[0]
-new product('BussMall product','../images/pet-sweep.jpg');//[0]
-new product('BussMall product','../images/scissors.jpg');//[0]
-new product('BussMall product','../images/shark.jpg');//[0]
-new product('BussMall product','../images/sweep.png');//[0]
+new product('pen','../images/pen.jpg');//[0]
+new product('pet-sweep','../images/pet-sweep.jpg');//[0]
+new product('scissors','../images/scissors.jpg');//[0]
+new product('shark','../images/shark.jpg');//[0]
+new product('weep','../images/sweep.png');//[0]
 
-new product('BussMall product','../images/tauntaun.jpg');//[0]
-new product('BussMall product','../images/unicorn.jpg');//[0]
-new product('BussMall product','../images/usb.gif');//[0]
-new product('BussMall product','../images/water-can.jpg');//[0]
-new product('BussMall product','../images/wine-glass.jpg');//[0]
+new product('tauntaun','../images/tauntaun.jpg');//[0]
+new product('unicorn','../images/unicorn.jpg');//[0]
+new product('usb','../images/usb.gif');//[0]
+new product('water-can','../images/water-can.jpg');//[0]
+new product('glass','../images/wine-glass.jpg');//[0]
 
 
 console.log(product.allImages);
@@ -100,7 +100,6 @@ function handleClicking(event){
     renderthreeImages();
     console.log(product.allImages);
   }else {
-    renderList()
     leftImageElement.removeEventListener('click', handleClicking);
     rightImageElement.removeEventListener('click',handleClicking);
     midimageElemnt.removeEventListener('click',handleClicking);
@@ -116,7 +115,13 @@ function renderList(){
     ul.appendChild(li);
     li.textContent = `${product.allImages[i].name}  has ${product.allImages[i].votes} Votes and it has appeared ${product.allImages[i].time} times`;
   }
+  
 }
+
+let submit=document.getElementById('submitt');
+submit.addEventListener('click', renderList)
+
+
 
 function genrateRandomIndex(){
    return Math.floor(Math.random() * product.allImages.length); 
