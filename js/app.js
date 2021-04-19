@@ -138,8 +138,9 @@ function renderList(){
 
 }
 
-let submit=document.getElementById('submitt');
-submit.addEventListener('click', renderList)
+// let submit=document.getElementById('submitt');
+// submit.addEventListener('click', renderList)
+// submit.removeEventListener('click', renderList)
 
 
 
@@ -173,6 +174,5 @@ function chart(){
           }]
       }
   })
-  submit.removeEventListener('click', renderList)
 
   }
