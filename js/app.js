@@ -4,14 +4,17 @@
 let leftImageElement = document.getElementById('left-image');
 let rightImageElement = document.getElementById('right-image');
 let midimageElemnt = document.getElementById('mid-image');
+let container = document.getElementById('sec-one');
 
 
 
 let counts = 0;
 let maxAttempts = 25;
-let leftIndex; 
-let rightIndex;
-let midindex;
+let leftIndex=0; 
+let rightIndex=0;
+let midindex=0;
+let arrOfnames = [];
+
 
 function product(name,source){
   this.name= name;
@@ -19,6 +22,8 @@ function product(name,source){
   this.time = 0;
   this.votes = 0;
   product.allImages.push(this);
+  arrOfnames.push(this.name);
+
 }
 
 
@@ -53,18 +58,31 @@ new product('glass','../images/wine-glass.jpg');//[0]
 
 console.log(product.allImages);
 
+
+
 function renderthreeImages(){
-  leftIndex = genrateRandomIndex(); //0 - 7
-  midindex =  genrateRandomIndex();
-  rightIndex = genrateRandomIndex(); // 0 - 7 
+
+  
+    leftIndex = genrateRandomIndex(); //0 - 7
+    midindex =  genrateRandomIndex();
+    rightIndex = genrateRandomIndex(); // 0 - 7 
+    let arrOfindex=[]
+
+  
+    while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex 
+      || arrOfindex.includes(leftIndex)|| arrOfindex.includes(rightIndex)||
+       arrOfindex.includes(midindex)){
+      leftIndex = genrateRandomIndex();
+      rightIndex = genrateRandomIndex();
+      midindex =  genrateRandomIndex();
+
+    }
+    arrOfindex[0]=leftIndex;
+    arrOfindex[1]=rightIndex;
+    arrOfindex[2]=midindex;
+    console.log(arrOfindex);
   
 
-  while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex ){
-    leftIndex = genrateRandomIndex();
-    rightIndex = genrateRandomIndex()
-  }
-
-  // here I have three indexes [left,mid,right] example[1,5,13]
   
   leftImageElement.src =  product.allImages[leftIndex].source;
   rightImageElement.src = product.allImages[rightIndex].source;
@@ -78,9 +96,8 @@ function renderthreeImages(){
 
 renderthreeImages();
 
-leftImageElement.addEventListener('click', handleClicking);
-rightImageElement.addEventListener('click',handleClicking);
-midimageElemnt.addEventListener('click',handleClicking);
+container.addEventListener('click',handleClicking);
+
 
 
 
@@ -100,26 +117,30 @@ function handleClicking(event){
     renderthreeImages();
     console.log(product.allImages);
   }else {
-    leftImageElement.removeEventListener('click', handleClicking);
-    rightImageElement.removeEventListener('click',handleClicking);
-    midimageElemnt.removeEventListener('click',handleClicking);
+    container.removeEventListener('click',handleClicking);
 
+    renderList();
+    chart()
   }
 }
 
-
+let arrOfVotes = [];
+let arrOfShown = [];
 function renderList(){
   let ul = document.getElementById('unList');
   for(let i = 0 ; i < product.allImages.length;i++){
+    arrOfVotes.push(product.allImages[i].votes);
+    arrOfShown.push(product.allImages[i].time);
     let li = document.createElement('li');
     ul.appendChild(li);
     li.textContent = `${product.allImages[i].name}  has ${product.allImages[i].votes} Votes and it has appeared ${product.allImages[i].time} times`;
   }
-  
+
 }
 
-let submit=document.getElementById('submitt');
-submit.addEventListener('click', renderList)
+// let submit=document.getElementById('submitt');
+// submit.addEventListener('click', renderList)
+// submit.removeEventListener('click', renderList)
 
 
 
@@ -128,3 +149,30 @@ function genrateRandomIndex(){
                   // 0.99999999999 * 8 => 7.999999994 floor()  => 7
                   // 0.99999999999  * 5 => 4.999999 floor => 4
 }
+//between 1-20 
+
+function chart(){
+  let ctx = document.getElementById('myChart')
+  let myChart = new Chart(ctx, { // its an instance 
+      type: 'bar',
+      data: {
+          labels: arrOfnames, // ['goat away' ,  ... 'sassy goat']
+          datasets: [{
+              label: 'Number Of votes',
+              data: arrOfVotes,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+              ],
+              borderWidth: 1
+          },{
+            label:'# of Shown',
+            data: arrOfShown,
+            backgroundColor:[
+              "rgb(192,192,192)"
+            ],
+            borderWidth: 1
+          }]
+      }
+  })
+
+  }
