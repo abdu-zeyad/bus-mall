@@ -4,6 +4,7 @@
 let leftImageElement = document.getElementById('left-image');
 let rightImageElement = document.getElementById('right-image');
 let midimageElemnt = document.getElementById('mid-image');
+let container = document.getElementById('sec-one');
 
 
 
@@ -12,10 +13,8 @@ let maxAttempts = 25;
 let leftIndex=0; 
 let rightIndex=0;
 let midindex=0;
-let prevleftindex=0;
-let prevrightindex=0;
-let prevmidindex=0;
-let prevArr=[prevleftindex,prevrightindex,prevmidindex];
+let arrOfnames = [];
+
 
 function product(name,source){
   this.name= name;
@@ -23,6 +22,8 @@ function product(name,source){
   this.time = 0;
   this.votes = 0;
   product.allImages.push(this);
+  arrOfnames.push(this.name);
+
 }
 
 
@@ -61,26 +62,26 @@ console.log(product.allImages);
 
 function renderthreeImages(){
 
-  leftIndex = genrateRandomIndex(); //0 - 7
+  
+    leftIndex = genrateRandomIndex(); //0 - 7
     midindex =  genrateRandomIndex();
     rightIndex = genrateRandomIndex(); // 0 - 7 
+    let arrOfindex=[]
 
-    while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex ){
-      leftIndex = genrateRandomIndex();
-      rightIndex = genrateRandomIndex()
-    }
   
-    // here I have 3 numbers [5,10,8]
-    let arrOfindex=[leftIndex,rightIndex,midindex]
-    
-     while (arrOfindex.includes(prevArr)) {
-     leftIndex = genrateRandomIndex(); 
-      midindex =  genrateRandomIndex();
+    while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex 
+      || arrOfindex.includes(leftIndex)|| arrOfindex.includes(rightIndex)||
+       arrOfindex.includes(midindex)){
+      leftIndex = genrateRandomIndex();
       rightIndex = genrateRandomIndex();
-    }
+      midindex =  genrateRandomIndex();
 
-   prevArr=arrOfindex;
-   console.log(arrOfindex); 
+    }
+    arrOfindex[0]=leftIndex;
+    arrOfindex[1]=rightIndex;
+    arrOfindex[2]=midindex;
+    console.log(arrOfindex);
+  
 
   
   leftImageElement.src =  product.allImages[leftIndex].source;
@@ -95,9 +96,8 @@ function renderthreeImages(){
 
 renderthreeImages();
 
-leftImageElement.addEventListener('click', handleClicking);
-rightImageElement.addEventListener('click',handleClicking);
-midimageElemnt.addEventListener('click',handleClicking);
+container.addEventListener('click',handleClicking);
+
 
 
 
@@ -117,22 +117,24 @@ function handleClicking(event){
     renderthreeImages();
     console.log(product.allImages);
   }else {
-    leftImageElement.removeEventListener('click', handleClicking);
-    rightImageElement.removeEventListener('click',handleClicking);
-    midimageElemnt.removeEventListener('click',handleClicking);
+    container.removeEventListener('click',handleClicking);
 
+    renderList();
+    chart()
   }
 }
 
-
+let arrOfVotes = [];
+let arrOfShown = [];
 function renderList(){
   let ul = document.getElementById('unList');
   for(let i = 0 ; i < product.allImages.length;i++){
+    arrOfVotes.push(product.allImages[i].votes);
+    arrOfShown.push(product.allImages[i].time);
     let li = document.createElement('li');
     ul.appendChild(li);
     li.textContent = `${product.allImages[i].name}  has ${product.allImages[i].votes} Votes and it has appeared ${product.allImages[i].time} times`;
   }
-  submit.removeEventListener('click', renderList)
 
 }
 
@@ -148,3 +150,29 @@ function genrateRandomIndex(){
 }
 //between 1-20 
 
+function chart(){
+  let ctx = document.getElementById('myChart')
+  let myChart = new Chart(ctx, { // its an instance 
+      type: 'bar',
+      data: {
+          labels: arrOfnames, // ['goat away' ,  ... 'sassy goat']
+          datasets: [{
+              label: 'Number Of votes',
+              data: arrOfVotes,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+              ],
+              borderWidth: 1
+          },{
+            label:'# of Shown',
+            data: arrOfShown,
+            backgroundColor:[
+              "rgb(192,192,192)"
+            ],
+            borderWidth: 1
+          }]
+      }
+  })
+  submit.removeEventListener('click', renderList)
+
+  }
