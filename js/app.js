@@ -9,9 +9,13 @@ let midimageElemnt = document.getElementById('mid-image');
 
 let counts = 0;
 let maxAttempts = 25;
-let leftIndex; 
-let rightIndex;
-let midindex;
+let leftIndex=0; 
+let rightIndex=0;
+let midindex=0;
+let prevleftindex=0;
+let prevrightindex=0;
+let prevmidindex=0;
+let prevArr=[prevleftindex,prevrightindex,prevmidindex];
 
 function product(name,source){
   this.name= name;
@@ -53,18 +57,31 @@ new product('glass','../images/wine-glass.jpg');//[0]
 
 console.log(product.allImages);
 
+
+
 function renderthreeImages(){
+
   leftIndex = genrateRandomIndex(); //0 - 7
-  midindex =  genrateRandomIndex();
-  rightIndex = genrateRandomIndex(); // 0 - 7 
+    midindex =  genrateRandomIndex();
+    rightIndex = genrateRandomIndex(); // 0 - 7 
+
+    while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex ){
+      leftIndex = genrateRandomIndex();
+      rightIndex = genrateRandomIndex()
+    }
   
+    // here I have 3 numbers [5,10,8]
+    let arrOfindex=[leftIndex,rightIndex,midindex]
+    
+     while (arrOfindex.includes(prevArr)) {
+     leftIndex = genrateRandomIndex(); 
+      midindex =  genrateRandomIndex();
+      rightIndex = genrateRandomIndex();
+    }
 
-  while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex ){
-    leftIndex = genrateRandomIndex();
-    rightIndex = genrateRandomIndex()
-  }
+   prevArr=arrOfindex;
+   console.log(arrOfindex); 
 
-  // here I have three indexes [left,mid,right] example[1,5,13]
   
   leftImageElement.src =  product.allImages[leftIndex].source;
   rightImageElement.src = product.allImages[rightIndex].source;
@@ -115,7 +132,8 @@ function renderList(){
     ul.appendChild(li);
     li.textContent = `${product.allImages[i].name}  has ${product.allImages[i].votes} Votes and it has appeared ${product.allImages[i].time} times`;
   }
-  
+  submit.removeEventListener('click', renderList)
+
 }
 
 let submit=document.getElementById('submitt');
@@ -128,3 +146,5 @@ function genrateRandomIndex(){
                   // 0.99999999999 * 8 => 7.999999994 floor()  => 7
                   // 0.99999999999  * 5 => 4.999999 floor => 4
 }
+//between 1-20 
+
