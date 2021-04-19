@@ -30,7 +30,6 @@ function product(name,source){
 product.allImages =[];
 
 
-
 new product('bag','../images/bag.jpg');//[0]
 new product('banana','../images/banana.jpg');//[0]
 new product('bathroom','../images/bathroom.jpg');//[0]
@@ -70,13 +69,12 @@ function renderthreeImages(){
 
   
     while(leftIndex === rightIndex || leftIndex === midindex || rightIndex === midindex 
-      || arrOfindex.includes(leftIndex)|| arrOfindex.includes(rightIndex)||
-       arrOfindex.includes(midindex)){
+      || arrOfindex.includes(leftIndex)|| arrOfindex.includes(rightIndex)|| arrOfindex.includes(midindex)){
       leftIndex = genrateRandomIndex();
       rightIndex = genrateRandomIndex();
       midindex =  genrateRandomIndex();
-
-    }
+      }
+      
     arrOfindex[0]=leftIndex;
     arrOfindex[1]=rightIndex;
     arrOfindex[2]=midindex;
@@ -146,8 +144,7 @@ function renderList(){
 
 function genrateRandomIndex(){
    return Math.floor(Math.random() * product.allImages.length); 
-                  // 0.99999999999 * 8 => 7.999999994 floor()  => 7
-                  // 0.99999999999  * 5 => 4.999999 floor => 4
+
 }
 //between 1-20 
 
