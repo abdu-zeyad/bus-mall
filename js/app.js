@@ -113,15 +113,18 @@ function handleClicking(event){
         product.allImages[midindex].votes++;
 }
 
-
+   
     renderthreeImages();
     console.log(product.allImages);
   }else {
     container.removeEventListener('click',handleClicking);
-
+    // fromls()
+    saveToLs()
     renderList();
     chart()
+
   }
+  
 }
 
 let arrOfVotes = [];
@@ -155,24 +158,84 @@ function chart(){
   let ctx = document.getElementById('myChart')
   let myChart = new Chart(ctx, { // its an instance 
       type: 'bar',
-      data: {
+      datashown: {
           labels: arrOfnames, // ['goat away' ,  ... 'sassy goat']
-          datasets: [{
+          datashownsets: [{
               label: 'Number Of votes',
-              data: arrOfVotes,
+              datashown: arrOfVotes,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
               ],
-              borderWidth: 1
+              bdatashownbackWidth: 1
           },{
             label:'# of Shown',
-            data: arrOfShown,
+            datashown: arrOfShown,
             backgroundColor:[
               "rgb(192,192,192)"
             ],
-            borderWidth: 1
+            bdatashownbackWidth: 1
           }]
       }
   })
 
   }
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // function handleSubmit(event){
+  //   event.preventDefault();
+  //   console.log(event.target);
+  
+  //   // get all the values from the form
+  //   const drink = event.target;
+  //   const name = drink.name.value;
+  //   const size = drink.size.value;
+  //   const isHot = drink.isHot.value;
+  //   const dType  = drink.drinkType.value;
+  //   const milk = drink.milk.value;
+  
+  //   new Coffee(name, size, milk, isHot, dType);
+  
+  //   // update the previous datashownbacks with the new datashownback
+  //   renderdatashownbacks();
+  
+  // }
+  
+  
+  function saveToLs(){
+    
+    let arrStr = JSON.stringify(product.allImages);
+
+    localStorage.setItem('allobjects', arrStr);
+  
+  }
+  
+  function fromls(){
+    let datashown = localStorage.getItem('allobjects');
+   
+    console.log(datashown);
+    let datashownback = JSON.parse(datashown);
+    console.log(datashownback);
+    if(datashownback !== null ){
+      product.allImages = datashownback;
+    }
+  
+  }
+//   renderthreeImages();
+fromls()
